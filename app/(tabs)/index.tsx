@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, useColorScheme, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import Animated, { FadeInUp, interpolate, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import Animated, { FadeInUp } from 'react-native-reanimated';
 
 const { width } = Dimensions.get('window');
 
@@ -11,7 +11,7 @@ const dummyArticles = [
     id: '1',
     brand: 'PEOPLE',
     title: 'Taylor Swift and Travis Kelce: Inside Their Whirlwind Romance',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9zwTAD6gKsOlkybtSSBfc-UR56k4Omlx0Vg&s', // Replace with a responsive image URL
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9zwTAD6gKsOlkybtSSBfc-UR56k4Omlx0Vg&s',
     category: 'Celebrity',
     readTime: '5 min read',
     type: 'article'
@@ -20,7 +20,7 @@ const dummyArticles = [
     id: '2',
     brand: 'ENTERTAINMENT WEEKLY',
     title: 'The Last of Us Season 2: Everything We Know So Far',
-    image: 'https://example.com/last-of-us-responsive.jpg', // Replace with a responsive image URL
+    image: 'https://images.unsplash.com/photo-1559570278-eb8d71d06403?w=800&auto=format&fit=crop',
     category: 'TV',
     readTime: '8 min read',
     type: 'video'
@@ -29,7 +29,7 @@ const dummyArticles = [
     id: '3',
     brand: 'INSTYLE',
     title: 'Spring Fashion Trends That Will Dominate 2024',
-    image: 'https://example.com/spring-fashion-responsive.jpg', // Replace with a responsive image URL
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9zwTAD6gKsOlkybtSSBfc-UR56k4Omlx0Vg&s',
     category: 'Fashion',
     readTime: '6 min read',
     type: 'article'
@@ -38,19 +38,24 @@ const dummyArticles = [
     id: '4',
     brand: 'BRIDES',
     title: "Modern Wedding Trends: What's Hot for 2024",
-    image: 'https://example.com/wedding-trends-responsive.jpg', // Replace with a responsive image URL
+    image: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&auto=format&fit=crop',
     category: 'Weddings',
     readTime: '7 min read',
     type: 'podcast'
   }
-]
-
+];
 
 const brandColors = {
   'PEOPLE': '#E31837',
   'ENTERTAINMENT WEEKLY': '#2C5282',
   'INSTYLE': '#805AD5',
-  'BRIDES': '#38A169'
+  'BRIDES': '#38A169',
+  primary: '#E31837', // Cosmo red
+  secondary: '#000000',
+  background: '#FFFFFF',
+  backgroundDark: '#1A1A1A',
+  text: '#000000',
+  textDark: '#FFFFFF',
 };
 
 export default function HomeScreen() {
@@ -73,14 +78,14 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={[styles.container, isDark && styles.containerDark]}>
-      <View style={styles.header}>
-        <Text style={[styles.logo, isDark && styles.textDark]}>C A R N I V A L</Text>
-        <TouchableOpacity style={styles.searchButton}>
+      <View style={[styles.header, isDark && styles.headerDark]}>
+        <Text style={[styles.logo, isDark && styles.textDark]}>CARNIVAL</Text>
+        <TouchableOpacity style={[styles.searchButton, isDark && styles.searchButtonDark]}>
           <Ionicons name="search" size={24} color={isDark ? '#FFFFFF' : '#000000'} />
         </TouchableOpacity>
       </View>
 
-      <View style={styles.filterWrapper}>
+      <View style={[styles.filterWrapper, isDark && styles.filterWrapperDark]}>
         <ScrollView 
           horizontal 
           showsHorizontalScrollIndicator={false} 
@@ -94,7 +99,7 @@ export default function HomeScreen() {
               style={[
                 styles.filterButton,
                 activeFilter === filter && styles.activeFilter,
-                activeFilter === filter && { backgroundColor: filter !== 'All' ? brandColors[filter] : '#FF3B30' },
+                activeFilter === filter && { backgroundColor: filter !== 'For You' ? brandColors[filter] : brandColors.primary },
                 isDark && styles.filterButtonDark,
               ]}>
               <Text
@@ -131,7 +136,7 @@ export default function HomeScreen() {
                 <Ionicons 
                   name={likedArticles.includes(article.id) ? "heart" : "heart-outline"} 
                   size={24} 
-                  color={likedArticles.includes(article.id) ? "#FF3B30" : "#FFFFFF"} 
+                  color={likedArticles.includes(article.id) ? brandColors.primary : '#FFFFFF'} 
                 />
               </TouchableOpacity>
             </View>
@@ -168,10 +173,10 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: brandColors.background,
   },
   containerDark: {
-    backgroundColor: '#1A1A1A',
+    backgroundColor: brandColors.backgroundDark,
   },
   header: {
     flexDirection: 'row',
@@ -181,23 +186,36 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5E5',
+    backgroundColor: brandColors.background,
+  },
+  headerDark: {
+    backgroundColor: brandColors.backgroundDark,
+    borderBottomColor: '#333333',
   },
   logo: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: '700',
-    color: '#000000',
+    color: brandColors.text,
     fontFamily: 'System',
+    letterSpacing: 1,
   },
   searchButton: {
     padding: 8,
     borderRadius: 20,
     backgroundColor: '#F5F5F5',
   },
+  searchButtonDark: {
+    backgroundColor: '#333333',
+  },
   filterWrapper: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: brandColors.background,
     paddingVertical: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5E5',
+  },
+  filterWrapperDark: {
+    backgroundColor: brandColors.backgroundDark,
+    borderBottomColor: '#333333',
   },
   filterContainer: {
     flexGrow: 0,
@@ -221,12 +239,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#333333',
   },
   activeFilter: {
-    backgroundColor: '#FF3B30',
+    backgroundColor: brandColors.primary,
   },
   filterText: {
     color: '#666666',
     fontWeight: '600',
     fontSize: 14,
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
   },
   activeFilterText: {
     color: '#FFFFFF',
@@ -237,7 +257,7 @@ const styles = StyleSheet.create({
   articleCard: {
     marginBottom: 25,
     borderRadius: 16,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: brandColors.background,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
@@ -255,6 +275,7 @@ const styles = StyleSheet.create({
   articleImage: {
     width: '100%',
     height: '100%',
+    resizeMode: 'cover',
   },
   brandTag: {
     position: 'absolute',
@@ -268,6 +289,8 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 12,
     fontWeight: '600',
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
   },
   likeButton: {
     position: 'absolute',
@@ -284,8 +307,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '700',
     marginBottom: 12,
-    color: '#000000',
+    color: brandColors.text,
     lineHeight: 28,
+    letterSpacing: 0.5,
   },
   articleMeta: {
     flexDirection: 'row',
@@ -306,15 +330,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666666',
     marginLeft: 4,
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
   },
   readTime: {
     fontSize: 14,
     color: '#666666',
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
   },
   shareButton: {
     padding: 8,
   },
   textDark: {
-    color: '#FFFFFF',
+    color: brandColors.textDark,
   },
 });
