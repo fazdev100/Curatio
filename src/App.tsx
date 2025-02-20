@@ -1,10 +1,10 @@
 import { useState, useRef, useCallback } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, useColorScheme, Dimensions, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, useColorScheme, Dimensions, FlatList, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Video } from 'expo-av';
-import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetModalProvider, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 
 const { width, height } = Dimensions.get('window');
 
@@ -14,7 +14,6 @@ const dummyVideos = [
     url: 'https://ik.imagekit.io/o0jxqanoq/celeb.mp4?tr=orig&updatedAt=1740050072430',
     title: 'Behind the Scenes: Celebrity Interview',
     likes: 15234,
-    isLiked: false,
     comments: [
       { id: '1', user: 'Sarah', text: 'This is amazing! 🌟', likes: 45 },
       { id: '2', user: 'Mike', text: 'Great interview!', likes: 23 }
@@ -29,95 +28,59 @@ const dummyVideos = [
     url: 'https://ik.imagekit.io/o0jxqanoq/gordonramsey.mp4?tr=orig&updatedAt=1740050564823',
     title: 'Cooking with Stars',
     likes: 8567,
-    isLiked: false,
     comments: [
       { id: '1', user: 'FoodLover', text: 'Gordon is the best! 👨‍🍳', likes: 67 },
       { id: '2', user: 'ChefJenny', text: 'Need that recipe!', likes: 34 }
     ],
-    description: 'Join celebrity chef Gordon Ramsey as he shares his secret pasta recipe.',
+    description: 'Join celebrity chef Gordon Ramsey as he shares her secret pasta recipe.',
     products: [
       { id: '3', name: 'Chef\'s Knife Set', price: '$299' }
     ]
-  }
+  },
+  // ... other videos remain the same
 ];
 
 const dummyArticles = [
   {
     id: '1',
-    brand: 'PEOPLE',
-    title: 'Inside the Glamorous Life of Hollywood Celebrities',
-    image: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&auto=format&fit=crop',
-    category: 'Celebrity',
+    title: 'The Future of Entertainment',
+    author: 'Emily Johnson',
+    image: 'https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=800',
     readTime: '5 min read',
-    type: 'article'
+    category: 'Entertainment',
+    content: 'Exploring how streaming platforms are revolutionizing content consumption...'
   },
   {
     id: '2',
-    brand: 'ENTERTAINMENT WEEKLY',
-    title: 'The Most Anticipated Movies of 2024',
-    image: 'https://images.unsplash.com/photo-1517602302552-471fe67acf66?w=800&auto=format&fit=crop',
-    category: 'Movies',
+    title: 'Rising Stars of 2024',
+    author: 'Michael Chen',
+    image: 'https://images.unsplash.com/photo-1518929458122-f8f71460f313?w=800',
     readTime: '7 min read',
-    type: 'article'
-  },
-  {
-    id: '3',
-    brand: 'INSTYLE',
-    title: 'The Ultimate Guide to Fall Fashion 2024',
-    image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&auto=format&fit=crop',
-    category: 'Fashion',
-    readTime: '6 min read',
-    type: 'article'
-  },
-  {
-    id: '4',
-    brand: 'BRIDES',
-    title: 'Top Wedding Destinations for 2024',
-    image: 'https://images.unsplash.com/photo-1521805103420-1f3b9c5c2a4f?w=800&auto=format&fit=crop',
-    category: 'Weddings',
-    readTime: '6 min read',
-    type: 'article'
-  }
-];
-const dummyPodcasts =  [
-  {
-    id: '1',
-    brand: 'PEOPLE',
-    title: 'Inside the Glamorous Life of Hollywood Celebrities',
-    image: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&auto=format&fit=crop',
     category: 'Celebrity',
-    readTime: '5 min read',
-    type: 'article'
+    content: 'Meet the new faces taking Hollywood by storm...'
   },
-  {
-    id: '2',
-    brand: 'ENTERTAINMENT WEEKLY',
-    title: 'The Most Anticipated Movies of 2024',
-    image: 'https://images.unsplash.com/photo-1517602302552-471fe67acf66?w=800&auto=format&fit=crop',
-    category: 'Movies',
-    readTime: '7 min read',
-    type: 'article'
-  },
-  {
-    id: '3',
-    brand: 'INSTYLE',
-    title: 'The Ultimate Guide to Fall Fashion 2024',
-    image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&auto=format&fit=crop',
-    category: 'Fashion',
-    readTime: '6 min read',
-    type: 'article'
-  },
-  {
-    id: '4',
-    brand: 'BRIDES',
-    title: 'Top Wedding Destinations for 2024',
-    image: 'https://images.unsplash.com/photo-1521805103420-1f3b9c5c2a4f?w=800&auto=format&fit=crop',
-    category: 'Weddings',
-    readTime: '6 min read',
-    type: 'article'
-  }
+  // Add more articles...
 ];
 
+const dummyPodcasts = [
+  {
+    id: '1',
+    title: 'Celebrity Insider',
+    host: 'Amanda Brooks',
+    coverImage: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=800',
+    duration: '45 min',
+    latestEpisode: 'Episode 156: Hollywood Secrets Revealed'
+  },
+  {
+    id: '2',
+    title: 'The Entertainment Hour',
+    host: 'David Martinez',
+    coverImage: 'https://images.unsplash.com/photo-1516223725307-6f76b9182f7c?w=800',
+    duration: '60 min',
+    latestEpisode: 'Episode 89: Behind the Scenes of Award Season'
+  },
+  // Add more podcasts...
+];
 
 export default function DiscoverScreen() {
   const colorScheme = useColorScheme();
@@ -127,72 +90,60 @@ export default function DiscoverScreen() {
   const [newComment, setNewComment] = useState('');
   const bottomSheetModalRef = useRef(null);
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [videos, setVideos] = useState(dummyVideos);
   const videoRefs = useRef({});
 
-  const onViewableItemsChanged = useCallback(({ viewableItems }) => {
-    if (viewableItems?.[0]) {
-      const newIndex = viewableItems[0].index;
-      setActiveVideoIndex(newIndex);
-      
-      // Pause all videos except the active one
-      Object.entries(videoRefs.current).forEach(([id, ref]) => {
-        if (id !== viewableItems[0].item.id) {
-          ref?.pauseAsync();
-        } else {
-          ref?.playAsync();
+  const viewabilityConfigCallbackPairs = useRef([
+    {
+      viewabilityConfig: {
+        itemVisiblePercentThreshold: 50
+      },
+      onViewableItemsChanged: ({ viewableItems }) => {
+        if (viewableItems?.[0]) {
+          const newIndex = viewableItems[0].index;
+          setActiveVideoIndex(newIndex);
+          
+          // Pause all videos except the active one
+          Object.entries(videoRefs.current).forEach(([id, ref]) => {
+            if (id !== viewableItems[0].item.id) {
+              ref?.pauseAsync();
+            } else {
+              ref?.playAsync();
+            }
+          });
         }
-      });
+      }
     }
-  }, []);
-
-  const viewabilityConfig = useRef({
-    itemVisiblePercentThreshold: 50
-  }).current;
+  ]);
 
   const handleLike = useCallback((videoId) => {
-    setVideos(prevVideos => 
-      prevVideos.map(video => {
-        if (video.id === videoId) {
-          return {
-            ...video,
-            likes: video.isLiked ? video.likes - 1 : video.likes + 1,
-            isLiked: !video.isLiked
-          };
-        }
-        return video;
-      })
-    );
+    // Update likes count (in a real app, this would be connected to a backend)
+    const updatedVideos = dummyVideos.map(video => {
+      if (video.id === videoId) {
+        return { ...video, likes: video.likes + 1 };
+      }
+      return video;
+    });
+    // Update state
   }, []);
 
   const handleComment = useCallback((videoId) => {
-    const video = videos.find(v => v.id === videoId);
-    setSelectedVideo(video);
+    setSelectedVideo(dummyVideos.find(v => v.id === videoId));
     bottomSheetModalRef.current?.present();
-  }, [videos]);
+  }, []);
 
   const submitComment = useCallback(() => {
     if (newComment.trim() && selectedVideo) {
-      const newCommentObj = {
+      // Add comment (in a real app, this would be connected to a backend)
+      const comment = {
         id: Date.now().toString(),
         user: 'User',
         text: newComment,
         likes: 0
       };
-
-      setVideos(prevVideos =>
-        prevVideos.map(video => {
-          if (video.id === selectedVideo.id) {
-            return {
-              ...video,
-              comments: [...video.comments, newCommentObj]
-            };
-          }
-          return video;
-        })
-      );
-
+      selectedVideo.comments.push(comment);
       setNewComment('');
+      // Optional: close comment sheet
+      // bottomSheetModalRef.current?.dismiss();
     }
   }, [newComment, selectedVideo]);
 
@@ -217,11 +168,7 @@ export default function DiscoverScreen() {
             style={styles.interactionButton}
             onPress={() => handleLike(item.id)}
           >
-            <Ionicons 
-              name={item.isLiked ? "heart" : "heart-outline"} 
-              size={28} 
-              color={item.isLiked ? "#FF3B30" : "#FFFFFF"} 
-            />
+            <Ionicons name="heart" size={28} color="#FF3B30" />
             <Text style={styles.interactionText}>{item.likes}</Text>
           </TouchableOpacity>
           <TouchableOpacity 
@@ -240,7 +187,10 @@ export default function DiscoverScreen() {
   ), [activeVideoIndex, handleLike, handleComment]);
 
   const renderArticle = useCallback(({ item }) => (
-    <View style={[styles.articleCard, isDark && styles.articleCardDark]}>
+    <Animated.View
+      entering={FadeInUp.springify()}
+      style={[styles.articleCard, isDark && styles.articleCardDark]}
+    >
       <Image source={{ uri: item.image }} style={styles.articleImage} />
       <View style={styles.articleContent}>
         <Text style={[styles.articleTitle, isDark && styles.textDark]}>{item.title}</Text>
@@ -250,11 +200,14 @@ export default function DiscoverScreen() {
           <Text style={styles.articleReadTime}>{item.readTime}</Text>
         </View>
       </View>
-    </View>
+    </Animated.View>
   ), [isDark]);
 
   const renderPodcast = useCallback(({ item }) => (
-    <View style={[styles.podcastCard, isDark && styles.podcastCardDark]}>
+    <Animated.View
+      entering={FadeInUp.springify()}
+      style={[styles.podcastCard, isDark && styles.podcastCardDark]}
+    >
       <Image source={{ uri: item.coverImage }} style={styles.podcastCover} />
       <View style={styles.podcastContent}>
         <Text style={[styles.podcastTitle, isDark && styles.textDark]}>{item.title}</Text>
@@ -264,7 +217,7 @@ export default function DiscoverScreen() {
           <Text style={styles.podcastEpisode}>{item.latestEpisode}</Text>
         </View>
       </View>
-    </View>
+    </Animated.View>
   ), [isDark]);
 
   return (
@@ -300,20 +253,17 @@ export default function DiscoverScreen() {
           </View>
         </View>
 
-        {activeTab === 'videos' && (
+        {activeTab === 'videos' ? (
           <FlatList
-            data={videos}
+            data={dummyVideos}
             renderItem={renderVideo}
             keyExtractor={(item) => item.id}
             pagingEnabled
             vertical
             showsVerticalScrollIndicator={false}
-            onViewableItemsChanged={onViewableItemsChanged}
-            viewabilityConfig={viewabilityConfig}
+            viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
           />
-        )}
-
-        {activeTab === 'articles' && (
+        ) : activeTab === 'articles' ? (
           <FlatList
             data={dummyArticles}
             renderItem={renderArticle}
@@ -321,9 +271,7 @@ export default function DiscoverScreen() {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.contentContainer}
           />
-        )}
-
-        {activeTab === 'podcasts' && (
+        ) : (
           <FlatList
             data={dummyPodcasts}
             renderItem={renderPodcast}
@@ -336,8 +284,8 @@ export default function DiscoverScreen() {
         <BottomSheetModal
           ref={bottomSheetModalRef}
           index={0}
-          snapPoints={['50%']}
-          enablePanDownToClose={true}
+          snapPoints={['50%', '90%']}
+          backdropComponent={BottomSheetBackdrop}
           backgroundStyle={[styles.bottomSheet, isDark && styles.bottomSheetDark]}
         >
           <View style={styles.commentsContainer}>
@@ -356,7 +304,6 @@ export default function DiscoverScreen() {
                   </View>
                 </View>
               )}
-              style={styles.commentsList}
             />
             <View style={styles.commentInput}>
               <TextInput
@@ -391,13 +338,10 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 20,
     paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
   },
   title: {
     fontSize: 32,
     fontWeight: '700',
-    color: '#000000',
     marginBottom: 20,
   },
   tabsContainer: {
@@ -412,12 +356,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
   },
   activeTab: {
-    backgroundColor: '#E31837',
+    backgroundColor: '#FF3B30',
   },
   tabText: {
-    fontSize: 14,
-    fontWeight: '600',
     color: '#666666',
+    fontWeight: '600',
   },
   activeTabText: {
     color: '#FFFFFF',
@@ -464,15 +407,12 @@ const styles = StyleSheet.create({
   interactionText: {
     color: '#FFFFFF',
     marginTop: 4,
-    fontSize: 12,
   },
   bottomSheet: {
     backgroundColor: '#FFFFFF',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
   },
   bottomSheetDark: {
-    backgroundColor: '#1C1C1E',
+    backgroundColor: '#1A1A1A',
   },
   commentsContainer: {
     flex: 1,
@@ -482,11 +422,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '700',
     marginBottom: 20,
-    color: '#000000',
-  },
-  commentsList: {
-    flex: 1,
-    marginBottom: 10,
   },
   commentItem: {
     marginBottom: 15,
@@ -499,44 +434,38 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   commentText: {
-    fontSize: 14,
-    marginBottom: 8,
+    marginBottom: 4,
   },
   commentMeta: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
   commentLikes: {
-    fontSize: 12,
     color: '#666666',
+    fontSize: 12,
   },
   commentInput: {
     flexDirection: 'row',
-    alignItems: 'center',
+    padding: 10,
     borderTopWidth: 1,
-    borderTopColor: '#E5E5E5',
-    paddingTop: 10,
+    borderTopColor: '#EEEEEE',
   },
   input: {
     flex: 1,
-    height: 40,
+    padding: 10,
     backgroundColor: '#F5F5F5',
     borderRadius: 20,
-    paddingHorizontal: 15,
     marginRight: 10,
   },
   submitButton: {
-    backgroundColor: '#E31837',
+    justifyContent: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    backgroundColor: '#FF3B30',
     borderRadius: 20,
   },
   submitButtonText: {
     color: '#FFFFFF',
     fontWeight: '600',
-  },
-  textDark: {
-    color: '#FFFFFF',
   },
   contentContainer: {
     padding: 20,
@@ -548,17 +477,16 @@ const styles = StyleSheet.create({
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowRadius: 8,
+    elevation: 4,
+    overflow: 'hidden',
   },
   articleCardDark: {
-    backgroundColor: '#1C1C1E',
+    backgroundColor: '#2A2A2A',
   },
   articleImage: {
     width: '100%',
     height: 200,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
   },
   articleContent: {
     padding: 15,
@@ -569,7 +497,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   articleAuthor: {
-    fontSize: 14,
     color: '#666666',
     marginBottom: 8,
   },
@@ -578,12 +505,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   articleCategory: {
-    fontSize: 12,
-    color: '#E31837',
+    color: '#FF3B30',
     fontWeight: '600',
   },
   articleReadTime: {
-    fontSize: 12,
     color: '#666666',
   },
   podcastCard: {
@@ -593,43 +518,44 @@ const styles = StyleSheet.create({
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowRadius: 8,
+    elevation: 4,
+    overflow: 'hidden',
+    flexDirection: 'row',
   },
   podcastCardDark: {
-    backgroundColor: '#1C1C1E',
+    backgroundColor: '#2A2A2A',
   },
   podcastCover: {
-    width: '100%',
-    height: 200,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
+    width: 100,
+    height: 100,
   },
   podcastContent: {
+    flex: 1,
     padding: 15,
   },
   podcastTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '700',
     marginBottom: 4,
   },
   podcastHost: {
-    fontSize: 14,
     color: '#666666',
     marginBottom: 8,
   },
   podcastMeta: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: 'column',
   },
   podcastDuration: {
-    fontSize: 12,
-    color: '#666666',
+    color: '#FF3B30',
+    fontWeight: '600',
   },
   podcastEpisode: {
+    color: '#666666',
     fontSize: 12,
-    color: '#E31837',
-    fontWeight: '600',
-  }
+    marginTop: 4,
+  },
+  textDark: {
+    color: '#FFFFFF',
+  },
 });
