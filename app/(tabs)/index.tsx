@@ -8,6 +8,15 @@ const { width } = Dimensions.get('window');
 
 const dummyArticles = [
   {
+    id: '8',
+    brand: 'ENTERTAINMENT WEEKLY',
+    title: 'Top 10 Must-Watch TV Shows of 2023',
+    image: 'https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=800&auto=format&fit=crop',
+    category: 'TV',
+    readTime: '7 min read',
+    type: 'article'
+  },
+  {
     id: '1',
     brand: 'PEOPLE',
     title: 'Taylor Swift and Travis Kelce: Inside Their Whirlwind Romance',
@@ -17,21 +26,75 @@ const dummyArticles = [
     type: 'article'
   },
   {
-    id: '2',
-    brand: 'ENTERTAINMENT WEEKLY',
-    title: 'The Last of Us Season 2: Everything We Know So Far',
-    image: 'https://images.unsplash.com/photo-1559570278-eb8d71d06403?w=800&auto=format&fit=crop',
-    category: 'TV',
-    readTime: '8 min read',
-    type: 'video'
+    id: '14',
+    brand: 'BRIDES',
+    title: 'How to Plan the Perfect Destination Wedding',
+    image: 'https://www.varmalla.com/wp-content/uploads/2023/11/103587-weddingnama3.jpeg',
+    category: 'Weddings',
+    readTime: '6 min read',
+    type: 'article'
   },
   {
     id: '3',
     brand: 'INSTYLE',
     title: 'Spring Fashion Trends That Will Dominate 2024',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9zwTAD6gKsOlkybtSSBfc-UR56k4Omlx0Vg&s',
+    image: 'https://assets.vogue.com/photos/65cfb6e3c838846cb84b384b/1:1/w_1280,h_1280,c_limit/ss24_collage_cover.jpg',
     category: 'Fashion',
     readTime: '6 min read',
+    type: 'article'
+  },
+  {
+    id: '5',
+    brand: 'PEOPLE',
+    title: 'Hollywood’s Biggest Stars: Behind the Scenes',
+    image: 'https://images.unsplash.com/photo-1519999482648-25049ddd37b1?w=800&auto=format&fit=crop',
+    category: 'Celebrity',
+    readTime: '6 min read',
+    type: 'video'
+  },
+  {
+    id: '10',
+    brand: 'ENTERTAINMENT WEEKLY',
+    title: 'The Evolution of Streaming Services',
+    image: 'https://images.unsplash.com/photo-1517602302552-471fe67acf66?w=800&auto=format&fit=crop',
+    category: 'TV',
+    readTime: '6 min read',
+    type: 'video'
+  },
+  {
+    id: '11',
+    brand: 'INSTYLE',
+    title: 'How to Style Your Wardrobe for Every Season',
+    image: 'https://i.ytimg.com/vi/EuIo-k9v47c/maxresdefault.jpg',
+    category: 'Fashion',
+    readTime: '5 min read',
+    type: 'video'
+  },
+  {
+    id: '2',
+    brand: 'ENTERTAINMENT WEEKLY',
+    title: 'The Last of Us Season 2: Everything We Know So Far',
+    image: 'https://www.nme.com/wp-content/uploads/2023/01/The_Last_Of_Us-696x442.jpg',
+    category: 'TV',
+    readTime: '8 min read',
+    type: 'video'
+  },
+  {
+    id: '16',
+    brand: 'BRIDES',
+    title: 'Bridal Beauty: Tips for Your Big Day',
+    image: 'https://images.unsplash.com/photo-1521805103420-1f3b9c5c2a4f?w=800&auto=format&fit=crop',
+    category: 'Weddings',
+    readTime: '4 min read',
+    type: 'podcast'
+  },
+  {
+    id: '7',
+    brand: 'PEOPLE',
+    title: 'Celebrity Fashion: Best and Worst Dressed',
+    image: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&auto=format&fit=crop',
+    category: 'Fashion',
+    readTime: '5 min read',
     type: 'article'
   },
   {
@@ -42,8 +105,54 @@ const dummyArticles = [
     category: 'Weddings',
     readTime: '7 min read',
     type: 'podcast'
+  },
+  {
+    id: '6',
+    brand: 'PEOPLE',
+    title: 'Exclusive: Interviews with the Stars of 2025',
+    image: 'https://media.vanityfair.com/photos/672287c039cf8e19f5b54c33/master/w_3940%2Cc_limit/VF1224_Cover_embed-on-site.jpg',
+    category: 'Celebrity',
+    readTime: '4 min read',
+    type: 'podcast'
+  },
+  {
+    id: '9',
+    brand: 'ENTERTAINMENT WEEKLY',
+    title: 'Movie Magic: Behind the Scenes of Blockbusters',
+    image: 'https://i.ytimg.com/vi/CAHRJ5t7kp8/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDEBpNfYUauMYV5jHj1X2HgKiwuMA',
+    category: 'Movies',
+    readTime: '5 min read',
+    type: 'podcast'
+  },
+  {
+    id: '12',
+    brand: 'INSTYLE',
+    title: 'The Best Accessories to Elevate Your Look',
+    image: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&auto=format&fit=crop',
+    category: 'Fashion',
+    readTime: '4 min read',
+    type: 'podcast'
+  },
+  {
+    id: '15',
+    brand: 'BRIDES',
+    title: 'Top Wedding Venues You Need to Know About',
+    image: 'https://media.weddingz.in/images/0d7c76d728071819720d4c4d6a0d9764/best-luxury-wedding-venues-in-jodhpur-for-a-regal-wedding-ceremony.jpg',
+    category: 'Weddings',
+    readTime: '5 min read',
+    type: 'video'
+  },
+  {
+    id: '13',
+    brand: 'INSTYLE',
+    title: 'Sustainable Fashion: The Future of Style',
+    image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=800&auto=format&fit=crop',
+    category: 'Fashion',
+    readTime: '6 min read',
+    type: 'article'
   }
 ];
+
 
 const brandColors = {
   'PEOPLE': '#E31837',
@@ -53,9 +162,10 @@ const brandColors = {
   primary: '#E31837', // Cosmo red
   secondary: '#000000',
   background: '#FFFFFF',
-  backgroundDark: '#1A1A1A',
+  backgroundDark: '#000000',
   text: '#000000',
   textDark: '#FFFFFF',
+  accent: '#FF3B30',
 };
 
 export default function HomeScreen() {

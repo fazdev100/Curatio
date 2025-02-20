@@ -11,38 +11,36 @@ const { width, height } = Dimensions.get('window');
 const dummyVideos = [
   {
     id: '1',
-    url: 'https://assets.mixkit.co/videos/preview/mixkit-young-woman-vlogger-recording-her-message-for-her-followers-41109-large.mp4',
+    url: 'https://ik.imagekit.io/o0jxqanoq/celeb.mp4?tr=orig&updatedAt=1740050072430',
     title: 'Behind the Scenes: Celebrity Interview',
     likes: 15234,
     comments: 892,
     description: 'Exclusive interview with the stars of the upcoming summer blockbuster.',
     products: [
-      { id: '1', name: 'Camera Setup', price: '$2,499' },
-      { id: '2', name: 'Studio Lights', price: '$599' }
+      { id: '1', name: 'Camera Setup', price: '$2,499' }
     ]
   },
   {
     id: '2',
-    url: 'https://assets.mixkit.co/videos/preview/mixkit-young-woman-vlogging-about-cooking-recipes-41103-large.mp4',
+    url: 'https://ik.imagekit.io/o0jxqanoq/gordonramsey.mp4?tr=orig&updatedAt=1740050564823',
     title: 'Cooking with Stars',
     likes: 8567,
     comments: 456,
-    description: 'Join celebrity chef Maria Rodriguez as she shares her secret pasta recipe.',
+    description: 'Join celebrity chef Gordon Ramsey as he shares her secret pasta recipe.',
     products: [
-      { id: '3', name: 'Chef\'s Knife Set', price: '$299' },
-      { id: '4', name: 'Signature Cookbook', price: '$45' }
+      { id: '3', name: 'Chef\'s Knife Set', price: '$299' }
+     
     ]
   },
   {
     id: '3',
-    url: 'https://assets.mixkit.co/videos/preview/mixkit-young-woman-talking-to-the-camera-for-her-vlog-41092-large.mp4',
+    url: 'https://ik.imagekit.io/o0jxqanoq/red%20carpet%20awards.mp4?updatedAt=1740050871643',
     title: 'Red Carpet Fashion Review',
     likes: 12789,
     comments: 934,
     description: 'Breaking down the most stunning looks from last night\'s awards ceremony.',
     products: [
-      { id: '5', name: 'Designer Dress', price: '$1,899' },
-      { id: '6', name: 'Luxury Clutch', price: '$799' }
+      { id: '5', name: 'Designer Dress', price: '$1,899' }
     ]
   },
   {
@@ -53,8 +51,7 @@ const dummyVideos = [
     comments: 567,
     description: 'Exclusive scoop on the biggest upcoming album releases and music industry news.',
     products: [
-      { id: '7', name: 'Pro Microphone', price: '$349' },
-      { id: '8', name: 'Studio Headphones', price: '$249' }
+      { id: '7', name: 'Pro Microphone', price: '$349' }
     ]
   }
 ];
