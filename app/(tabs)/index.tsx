@@ -1,8 +1,9 @@
 import { useState, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, useColorScheme, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
+import { useAppTheme } from '../../hooks/useAppTheme';
 
 const { width } = Dimensions.get('window');
 
@@ -46,7 +47,7 @@ const dummyArticles = [
   {
     id: '5',
     brand: 'PEOPLE',
-    title: 'Hollywood’s Biggest Stars: Behind the Scenes',
+    title: 'Hollywoods Biggest Stars: Behind the Scenes',
     image: 'https://images.unsplash.com/photo-1519999482648-25049ddd37b1?w=800&auto=format&fit=crop',
     category: 'Celebrity',
     readTime: '6 min read',
@@ -153,24 +154,8 @@ const dummyArticles = [
   }
 ];
 
-
-const brandColors = {
-  'PEOPLE': '#E31837',
-  'ENTERTAINMENT WEEKLY': '#2C5282',
-  'INSTYLE': '#805AD5',
-  'BRIDES': '#38A169',
-  primary: '#E31837', // Cosmo red
-  secondary: '#000000',
-  background: '#FFFFFF',
-  backgroundDark: '#000000',
-  text: '#000000',
-  textDark: '#FFFFFF',
-  accent: '#FF3B30',
-};
-
 export default function HomeScreen() {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
+  const { colors } = useAppTheme();
   const [activeFilter, setActiveFilter] = useState('For You');
   const [likedArticles, setLikedArticles] = useState<string[]>([]);
 
@@ -187,15 +172,15 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <SafeAreaView style={[styles.container, isDark && styles.containerDark]}>
-      <View style={[styles.header, isDark && styles.headerDark]}>
-        <Text style={[styles.logo, isDark && styles.textDark]}>CARNIVAL</Text>
-        <TouchableOpacity style={[styles.searchButton, isDark && styles.searchButtonDark]}>
-          <Ionicons name="search" size={24} color={isDark ? '#FFFFFF' : '#000000'} />
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <View style={[styles.header, { backgroundColor: colors.background }]}>
+        <Text style={[styles.logo, { color: colors.text }]}>CARNIVAL</Text>
+        <TouchableOpacity style={[styles.searchButton, { backgroundColor: colors.card }]}>
+          <Ionicons name="search" size={24} color={colors.icon.primary} />
         </TouchableOpacity>
       </View>
 
-      <View style={[styles.filterWrapper, isDark && styles.filterWrapperDark]}>
+      <View style={[styles.filterWrapper, { backgroundColor: colors.background }]}>
         <ScrollView 
           horizontal 
           showsHorizontalScrollIndicator={false} 
@@ -208,15 +193,14 @@ export default function HomeScreen() {
               onPress={() => setActiveFilter(filter)}
               style={[
                 styles.filterButton,
-                activeFilter === filter && styles.activeFilter,
-                activeFilter === filter && { backgroundColor: filter !== 'For You' ? brandColors[filter] : brandColors.primary },
-                isDark && styles.filterButtonDark,
+                { backgroundColor: activeFilter === filter 
+                  ? (filter !== 'For You' ? colors.brands[filter] : colors.primary) 
+                  : 'rgba(255, 255, 255, 0.1)' }
               ]}>
               <Text
                 style={[
                   styles.filterText,
-                  activeFilter === filter && styles.activeFilterText,
-                  isDark && styles.textDark,
+                  { color: activeFilter === filter ? '#FFFFFF' : 'rgba(255, 255, 255, 0.9)' }
                 ]}>
                 {filter}
               </Text>
@@ -233,10 +217,10 @@ export default function HomeScreen() {
           <Animated.View
             key={article.id}
             entering={FadeInUp.delay(index * 200).springify()}
-            style={[styles.articleCard, isDark && styles.articleCardDark]}>
+            style={[styles.articleCard, { backgroundColor: colors.card }]}>
             <View style={styles.imageContainer}>
               <Image source={{ uri: article.image }} style={styles.articleImage} />
-              <View style={[styles.brandTag, { backgroundColor: brandColors[article.brand] }]}>
+              <View style={[styles.brandTag, { backgroundColor: colors.brands[article.brand] }]}>
                 <Text style={styles.brandTagText}>{article.brand}</Text>
               </View>
               <TouchableOpacity 
@@ -246,30 +230,30 @@ export default function HomeScreen() {
                 <Ionicons 
                   name={likedArticles.includes(article.id) ? "heart" : "heart-outline"} 
                   size={24} 
-                  color={likedArticles.includes(article.id) ? brandColors.primary : '#FFFFFF'} 
+                  color={likedArticles.includes(article.id) ? colors.primary : colors.icon.primary} 
                 />
               </TouchableOpacity>
             </View>
             <View style={styles.articleContent}>
-              <Text style={[styles.title, isDark && styles.textDark]}>{article.title}</Text>
+              <Text style={[styles.title, { color: colors.text }]}>{article.title}</Text>
               <View style={styles.articleMeta}>
                 <View style={styles.metaLeft}>
                   <View style={styles.typeContainer}>
                     <Ionicons 
                       name={article.type === 'video' ? 'play-circle' : article.type === 'podcast' ? 'mic' : 'document-text'} 
                       size={16} 
-                      color={isDark ? '#FFFFFF' : '#666666'} 
+                      color={colors.accent} 
                     />
-                    <Text style={[styles.category, isDark && styles.textDark]}>
+                    <Text style={[styles.category, { color: colors.accent }]}>
                       {article.category}
                     </Text>
                   </View>
-                  <Text style={[styles.readTime, isDark && styles.textDark]}>
+                  <Text style={[styles.readTime, { color: colors.textSecondary }]}>
                     {article.readTime}
                   </Text>
                 </View>
                 <TouchableOpacity style={styles.shareButton}>
-                  <Ionicons name="share-outline" size={20} color={isDark ? '#FFFFFF' : '#666666'} />
+                  <Ionicons name="share-outline" size={24} color={colors.icon.primary} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -283,10 +267,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: brandColors.background,
-  },
-  containerDark: {
-    backgroundColor: brandColors.backgroundDark,
   },
   header: {
     flexDirection: 'row',
@@ -295,37 +275,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
-    backgroundColor: brandColors.background,
-  },
-  headerDark: {
-    backgroundColor: brandColors.backgroundDark,
-    borderBottomColor: '#333333',
+    borderBottomColor: '#2A2A2A',
   },
   logo: {
     fontSize: 32,
     fontWeight: '700',
-    color: brandColors.text,
     fontFamily: 'System',
     letterSpacing: 1,
   },
   searchButton: {
     padding: 8,
     borderRadius: 20,
-    backgroundColor: '#F5F5F5',
-  },
-  searchButtonDark: {
-    backgroundColor: '#333333',
   },
   filterWrapper: {
-    backgroundColor: brandColors.background,
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E5E5',
-  },
-  filterWrapperDark: {
-    backgroundColor: brandColors.backgroundDark,
-    borderBottomColor: '#333333',
+    borderBottomColor: '#2A2A2A',
   },
   filterContainer: {
     flexGrow: 0,
@@ -338,28 +303,17 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginRight: 12,
     borderRadius: 25,
-    backgroundColor: '#F5F5F5',
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 3,
-  },
-  filterButtonDark: {
-    backgroundColor: '#333333',
-  },
-  activeFilter: {
-    backgroundColor: brandColors.primary,
+    elevation: 5,
   },
   filterText: {
-    color: '#666666',
     fontWeight: '600',
     fontSize: 14,
     letterSpacing: 0.5,
     textTransform: 'uppercase',
-  },
-  activeFilterText: {
-    color: '#FFFFFF',
   },
   contentContainer: {
     padding: 20,
@@ -367,16 +321,12 @@ const styles = StyleSheet.create({
   articleCard: {
     marginBottom: 25,
     borderRadius: 16,
-    backgroundColor: brandColors.background,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.2,
     shadowRadius: 12,
     elevation: 5,
     overflow: 'hidden',
-  },
-  articleCardDark: {
-    backgroundColor: '#2A2A2A',
   },
   imageContainer: {
     position: 'relative',
@@ -406,7 +356,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 16,
     right: 16,
-    backgroundColor: 'rgba(0,0,0,0.3)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
     borderRadius: 20,
     padding: 8,
   },
@@ -417,7 +367,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '700',
     marginBottom: 12,
-    color: brandColors.text,
     lineHeight: 28,
     letterSpacing: 0.5,
   },
@@ -438,21 +387,17 @@ const styles = StyleSheet.create({
   },
   category: {
     fontSize: 14,
-    color: '#666666',
     marginLeft: 4,
     letterSpacing: 0.5,
     textTransform: 'uppercase',
+    fontWeight: '600',
   },
   readTime: {
     fontSize: 14,
-    color: '#666666',
     letterSpacing: 0.5,
     textTransform: 'uppercase',
   },
   shareButton: {
     padding: 8,
-  },
-  textDark: {
-    color: brandColors.textDark,
   },
 });

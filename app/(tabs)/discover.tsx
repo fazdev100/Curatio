@@ -21,7 +21,13 @@ const dummyVideos = [
     ],
     description: 'Exclusive interview with the stars of the upcoming summer blockbuster.',
     products: [
-      { id: '1', name: 'Camera Setup', price: '$2,499' }
+      { 
+        id: '1', 
+        name: 'Professional Streaming Microphone',
+        price: '$129.99',
+        image: 'https://images.unsplash.com/photo-1610042143536-9f88a3df8fbc?w=800&auto=format&fit=crop',
+        description: 'Studio-quality USB microphone for professional interviews and podcasting'
+      }
     ]
   },
   {
@@ -36,7 +42,97 @@ const dummyVideos = [
     ],
     description: 'Join celebrity chef Gordon Ramsey as he shares his secret pasta recipe.',
     products: [
-      { id: '3', name: 'Chef\'s Knife Set', price: '$299' }
+      { 
+        id: '1', 
+        name: 'Professional Chef Knife Set',
+        price: '$299.99',
+        image: 'https://images.unsplash.com/photo-1593618998160-c4d5a436638b?w=800&auto=format&fit=crop',
+        description: 'Premium 8-piece knife set used by professional chefs'
+      }
+    ]
+  },
+  {
+    id: '3',
+    url: 'https://ik.imagekit.io/o0jxqanoq/zendya%20makeup.mp4?updatedAt=1742724911930',
+    title: 'Celebrity Makeup Tutorial',
+    likes: 23456,
+    isLiked: false,
+    comments: [
+      { id: '1', user: 'BeautyGuru', text: 'Love these products! 💄', likes: 89 },
+      { id: '2', user: 'MakeupArtist', text: 'Perfect technique!', likes: 56 }
+    ],
+    description: 'Get the perfect Zendaya red carpet look with this celebrity makeup artist tutorial.',
+    products: [
+      {
+        id: '1',
+        name: 'Luxury Makeup Brush Set',
+        price: '$149.99',
+        image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&auto=format&fit=crop',
+        description: 'Professional 15-piece makeup brush set for flawless application'
+      }
+    ]
+  },
+  {
+    id: '4',
+    url: 'https://ik.imagekit.io/o0jxqanoq/workout.mp4?tr=orig&updatedAt=1740050923145',
+    title: 'Celebrity Fitness Routine',
+    likes: 19876,
+    isLiked: false,
+    comments: [
+      { id: '1', user: 'FitnessFanatic', text: 'Great workout! 💪', likes: 78 },
+      { id: '2', user: 'HealthyLife', text: 'Trying this tomorrow!', likes: 45 }
+    ],
+    description: 'Get fit with this celebrity trainer-approved workout routine.',
+    products: [
+      {
+        id: '1',
+        name: 'Smart Fitness Tracker',
+        price: '$199.99',
+        image: 'https://images.unsplash.com/photo-1557438159-51eec7a6c9e8?w=800&auto=format&fit=crop',
+        description: 'Advanced fitness tracker with heart rate monitoring and workout tracking'
+      }
+    ]
+  },
+  {
+    id: '5',
+    url: 'https://ik.imagekit.io/o0jxqanoq/fashion.mp4?tr=orig&updatedAt=1740051078912',
+    title: 'Fashion Week Highlights',
+    likes: 27654,
+    isLiked: false,
+    comments: [
+      { id: '1', user: 'Fashionista', text: 'Stunning collection! 👗', likes: 92 },
+      { id: '2', user: 'StyleIcon', text: 'Need everything!', likes: 67 }
+    ],
+    description: 'Exclusive behind-the-scenes look at Fashion Week.',
+    products: [
+      {
+        id: '1',
+        name: 'Designer Handbag',
+        price: '$899.99',
+        image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop',
+        description: 'Limited edition designer handbag from the latest collection'
+      }
+    ]
+  },
+  {
+    id: '6',
+    url: 'https://ik.imagekit.io/o0jxqanoq/music.mp4?tr=orig&updatedAt=1740051234567',
+    title: 'Studio Session',
+    likes: 31245,
+    isLiked: false,
+    comments: [
+      { id: '1', user: 'MusicLover', text: 'Can\'t wait for the album! 🎵', likes: 88 },
+      { id: '2', user: 'Producer', text: 'Those beats are fire!', likes: 59 }
+    ],
+    description: 'Exclusive studio session with top music producer.',
+    products: [
+      {
+        id: '1',
+        name: 'Professional Studio Headphones',
+        price: '$349.99',
+        image: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800&auto=format&fit=crop',
+        description: 'Studio-quality headphones used by professional musicians'
+      }
     ]
   }
 ];
@@ -79,7 +175,8 @@ const dummyArticles = [
     type: 'article'
   }
 ];
-const dummyPodcasts =  [
+
+const dummyPodcasts = [
   {
     id: '1',
     brand: 'PEOPLE',
@@ -117,7 +214,6 @@ const dummyPodcasts =  [
     type: 'article'
   }
 ];
-
 
 export default function DiscoverScreen() {
   const colorScheme = useColorScheme();
